@@ -1,23 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from "react";
+import "./App.css";
+import { Grid } from "./components/Grid/Grid";
 
 function App() {
+  const [maze, setMaze] = useState(
+    Array.from({ length: 10 }, () => Array(10).fill(0))
+  );
+
+  useEffect(() => {
+    const newMaze = [...maze];
+
+    newMaze[0][0] = "s";
+    newMaze[9][9] = "e";
+
+    setMaze(newMaze);
+  }, []);
+
+  const updateMaze = (newMaze) => setMaze(newMaze);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <nav>
+        <ul>
+          <li>
+            <button>Clear Board</button>
+          </li>
+        </ul>
+      </nav>
+      <Grid maze={maze} updateMaze={updateMaze} />
     </div>
   );
 }
