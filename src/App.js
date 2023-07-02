@@ -9,20 +9,24 @@ function App() {
   );
 
   useEffect(() => {
-    const newMaze = [...maze];
+    resetMaze();
+  }, []);
+
+  const resetMaze = () => {
+    const newMaze = Array.from({ length: 10 }, () => Array(10).fill(0));
 
     newMaze[0][0] = "S";
     newMaze[9][9] = "E";
 
     setMaze(newMaze);
-  }, []);
+  };
 
   return (
     <div>
       <nav>
         <ul>
           <li>
-            <button>Clear Board</button>
+            <button onClick={resetMaze}>Clear Board</button>
           </li>
           <li>
             <button onClick={() => findPathByDFS(maze, setMaze)}>DFS</button>
