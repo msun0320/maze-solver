@@ -19,3 +19,7 @@
 .cell.end {
   background-color: green;
 }
+
+.cell.visited {
+  background-color: yellow;
+}
