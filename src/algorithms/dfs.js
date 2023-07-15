@@ -1,4 +1,4 @@
-const findPathByDFS = (maze, setMaze) => {
+const dfs = (maze, setMaze) => {
   // Define the possible movements: up, right, down, left
   const dx = [-1, 0, 1, 0];
   const dy = [0, 1, 0, -1];
@@ -13,7 +13,7 @@ const findPathByDFS = (maze, setMaze) => {
   };
 
   // Helper function to perform dfs
-  const dfs = (startRow, startCol, path) => {
+  const helper = (startRow, startCol, path) => {
     // Check if the current position is the end point
     if (maze[startRow][startCol] === "E") {
       // Return the path when the end point is reached
@@ -40,7 +40,7 @@ const findPathByDFS = (maze, setMaze) => {
       // Add the movement to the path
       path.push([newX, newY]);
       // Recursively explore the new position
-      const res = dfs(newX, newY, path);
+      const res = helper(newX, newY, path);
       // If the end point is reached in the recursive call, return the path
       if (res) return res;
       // Remove the movement from the path as it didn't lead to a solution
@@ -67,13 +67,13 @@ const findPathByDFS = (maze, setMaze) => {
   }
 
   // Create a visited maze to keep track of visited cells
-  const visited = Array.from({ length: 10 }, () => Array(10).fill(0));
+  const visited = Array.from({ length: 10 }, () => Array(10).fill(false));
 
   // Make a copy of the maze to be updated and rendered
   const newMaze = [...maze];
 
   // Solve the maze using DFS
-  return dfs(startRow, startCol, path);
+  return helper(startRow, startCol, path);
 };
 
-export default findPathByDFS;
+export default dfs;

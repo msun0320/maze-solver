@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import { Grid } from "./components/Grid/Grid";
-import findPathByDFS from "./algorithms/dfs";
+import dfs from "./algorithms/dfs";
+import bfs from "./algorithms/bfs";
 
 function App() {
   const [maze, setMaze] = useState(
@@ -29,7 +30,8 @@ function App() {
             <button onClick={resetMaze}>Clear Board</button>
           </li>
           <li>
-            <button onClick={() => findPathByDFS(maze, setMaze)}>DFS</button>
+            <button onClick={() => bfs(maze, setMaze)}>BFS</button>
+            <button onClick={() => dfs(maze, setMaze)}>DFS</button>
           </li>
         </ul>
       </nav>
