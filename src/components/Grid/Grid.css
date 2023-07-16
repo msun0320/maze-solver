@@ -21,5 +21,9 @@
 }
 
 .cell.visited {
+  background-color: #ccc;
+}
+
+.cell.path {
   background-color: yellow;
 }

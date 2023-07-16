@@ -18,7 +18,7 @@ export const Grid = (props) => {
       newMaze[rowIndex][colIndex] = 0;
     }
 
-    props.setMaze(newMaze);
+    props.onMazeChange(newMaze);
   };
 
   const handleMouseDown = (e) => {
@@ -49,6 +49,8 @@ export const Grid = (props) => {
                   ? "end"
                   : value === "V"
                   ? "visited"
+                  : value === "P"
+                  ? "path"
                   : ""
               }`}
               onMouseDown={handleMouseDown}

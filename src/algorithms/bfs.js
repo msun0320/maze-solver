@@ -1,4 +1,4 @@
-const bfs = (maze, setMaze) => {
+const bfs = (maze) => {
   // Define the possible movements: up, right, down, left
   const dx = [-1, 0, 1, 0];
   const dy = [0, 1, 0, -1];
@@ -28,13 +28,14 @@ const bfs = (maze, setMaze) => {
   const queue = [];
   // Create a visited maze to keep track of visited cells
   const visited = Array.from({ length: 10 }, () => Array(10).fill(false));
+  // Create a visit history to keep track of visited cells for UI rendering
+  const history = [];
   // Create a prev maze to keep track of previous steps
   const prev = Array.from({ length: 10 }, () => Array(10).fill(null));
-  // Make a copy of the maze to be updated and rendered
-  const newMaze = [...maze];
 
   queue.push([startRow, startCol]);
   visited[startRow][startCol] = true;
+  history.push([startRow, startCol]);
 
   while (queue.length > 0) {
     const curPos = queue.shift();
@@ -49,31 +50,30 @@ const bfs = (maze, setMaze) => {
         continue;
       }
 
+      history.push([newX, newY]);
+
       // Check if the next position is the end point
       if (maze[newX][newY] === "E") {
         // Reconstruct the path from end to start
-        const path = [];
+        const path = [[newX, newY]];
         let backtrack = curPos;
         while (backtrack !== null) {
           path.unshift(backtrack);
           backtrack = prev[backtrack[0]][backtrack[1]];
         }
         // Return the path when the end point is reached
-        return path;
+        return [path, history];
       }
 
       // Mark the next position as visited
       visited[newX][newY] = true;
-      // Render updated maze
-      newMaze[newX][newY] = "V";
-      setMaze(newMaze);
       prev[newX][newY] = curPos;
       queue.push([newX, newY]);
     }
   }
 
   // No path to the end point found from the current position
-  return null;
+  return [null, history];
 };
 
 export default bfs;

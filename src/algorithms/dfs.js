@@ -1,4 +1,4 @@
-const dfs = (maze, setMaze) => {
+const dfs = (maze) => {
   // Define the possible movements: up, right, down, left
   const dx = [-1, 0, 1, 0];
   const dy = [0, 1, 0, -1];
@@ -13,19 +13,15 @@ const dfs = (maze, setMaze) => {
   };
 
   // Helper function to perform dfs
-  const helper = (startRow, startCol, path) => {
+  const helper = (startRow, startCol) => {
     // Check if the current position is the end point
     if (maze[startRow][startCol] === "E") {
       // Return the path when the end point is reached
-      return path;
+      return [path, history];
     }
 
     // Mark the current position as visited
     visited[startRow][startCol] = true;
-
-    // Render updated maze
-    newMaze[startRow][startCol] = "V";
-    setMaze(newMaze);
 
     // Try each possible movement
     for (let direction = 0; direction < 4; direction++) {
@@ -39,20 +35,18 @@ const dfs = (maze, setMaze) => {
 
       // Add the movement to the path
       path.push([newX, newY]);
+      history.push([newX, newY]);
       // Recursively explore the new position
-      const res = helper(newX, newY, path);
+      const [res, visitRes] = helper(newX, newY);
       // If the end point is reached in the recursive call, return the path
-      if (res) return res;
+      if (res) return [res, visitRes];
       // Remove the movement from the path as it didn't lead to a solution
       path.pop();
     }
 
     // No path to the end point found from the current position
-    return null;
+    return [null, history];
   };
-
-  // Initialize an empty path
-  const path = [];
 
   // Find the start point
   let startRow, startCol;
@@ -66,14 +60,17 @@ const dfs = (maze, setMaze) => {
     }
   }
 
+  // Initialize an empty path
+  const path = [[startRow, startCol]];
+
   // Create a visited maze to keep track of visited cells
   const visited = Array.from({ length: 10 }, () => Array(10).fill(false));
 
-  // Make a copy of the maze to be updated and rendered
-  const newMaze = [...maze];
+  // Create a history to keep track of visited cells for UI rendering
+  const history = [[startRow, startCol]];
 
   // Solve the maze using DFS
-  return helper(startRow, startCol, path);
+  return helper(startRow, startCol);
 };
 
 export default dfs;
